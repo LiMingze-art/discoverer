@@ -1,0 +1,33 @@
+#from flask import Flask
+import re
+import bs4
+import urllib.request  
+from bs4 import BeautifulSoup 
+import urllib.parse
+import sys
+import requests  
+
+#最简单的搜索功能实现,大致满足课题关键词搜索的要求
+def search(search_item):#基于网页中文本词的搜索
+
+    Allurl=[]#储存搜索结果网页的列表，作为链接出现在返回的跳转到的可视化网页中
+    for url in{}: #大括号中为我们网站中的教授主页网址集合
+        #提取网页中的文本信息
+        html = urllib.request.urlopen(url)  
+        content = html.read().decode('utf-8')
+        html.close()
+        soup = BeautifulSoup(content, "lxml")  
+        text = soup.find('div', class_="lemma-summary").children
+        print("search result:")
+        Allwords=''"
+        for x in text:
+            word = re.sub(re.compile(r"<(.+?)>"),'',str(x))
+            words = re.sub(re.compile(r"\[(.+?)\]"),'',word)
+            Allwords=Allwords+words
+        #提取文本信息结束（这段最好别动，调动的库太多了）
+        if search_item in Allwords:
+            #判断搜索的内容是否在网页的文本中
+            Allurl.attend(url)
+    return render_template("...")#跳转到搜索结果的页面
+    # Allurl列表中的链接要显示再搜索结果页面中
+
